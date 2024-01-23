@@ -130,6 +130,129 @@ def send_mail_to_parent(request):
 #     def post(self, request):
 #         send_mail_based_on_dates.delay()
 #         return Response({"message": "Email sending initiated."}, status=status.HTTP_200_OK)
+<<<<<<< HEAD
+=======
+
+
+# class SendMailToParentView(APIView):
+#     def get(self, request):
+#         send_mail_based_on_dates.delay()
+#         return Response({"message": "Email sending initiated."}, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+class VaxCycleAPIView(generics.ListCreateAPIView):
+   queryset = Vax_Cycle.objects.all()
+   serializer_class = VaxCycleSerializer
+    
+
+class VaxCycleDelete_Update(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Vax_Cycle.objects.all()
+    serializer_class = VaxCycleSerializer
+    
+class VaxAPIView(generics.ListCreateAPIView):
+   queryset=Vax.objects.all()
+   serializer_class=VaxSerializer
+    
+class VaxDelete_Update(generics.RetrieveUpdateDestroyAPIView):
+   queryset=Vax.objects.all()
+   serializer_class=VaxSerializer
+
+
+
+
+
+#vaccine dates
+    
+
+def vaccination_dates_view(request, child_id):
+    child = get_object_or_404(Child, pk=child_id)
+    vaccination_dates = child.get_vaccination_dates()
+
+    # Example: Convert vaccination dates to strings for JSON response
+    vaccination_dates_str = [str(date) for date in vaccination_dates]
+
+    return JsonResponse({'vaccination_dates': vaccination_dates_str})
+    
+
+
+
+class ChatbotAPI(APIView):
+    def __init__(self):
+        super().__init__()
+        # Read PDF and initialize necessary components
+        os.environ["OPENAI_API_KEY"] = "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"
+        pdfreader = PdfReader(r"C:\Users\User\babycalender\babyvaccinepro\Dr.baby.pdf")
+        raw_text = ''
+        for page in pdfreader.pages:
+            content = page.extract_text()
+            if content:
+                raw_text += content
+
+        text_splitter = CharacterTextSplitter(
+            separator="\n",
+            chunk_size=800,
+            chunk_overlap=200,
+            length_function=len,
+        )
+        texts = text_splitter.split_text(raw_text)
+
+        embeddings = OpenAIEmbeddings()
+        self.document_search = FAISS.from_texts(texts, embeddings)
+
+        self.chain = load_qa_chain(OpenAI(), chain_type="stuff")
+
+    def post(self, request):
+        user_input = request.data.get('user_input')
+
+        if user_input.lower() == 'exit':
+            return Response({"response": "Goodbye!"}, status=status.HTTP_200_OK)
+
+        # Your existing response logic
+        bot_response = self.get_response(user_input)
+        return Response({"response": bot_response}, status=status.HTTP_200_OK)
+
+    def get_response(self, user_input):
+        if user_input.lower() in ["hi", "hello", "hey", "hy", "hai"]:
+            return "Hello, welcome to Dr Baby. How can I assist you today!"
+        elif user_input.lower() in ["bye", "by", "thank you", "thanks"]:
+            return "bye"
+        else:
+            docs = self.document_search.similarity_search(user_input)
+            return self.chain.run(input_documents=docs, question=user_input)
+        
+
+#vaccine names
+        
+class VaccineListView(APIView):
+    def post(self,request):
+        a=VaccineNameSerializer(data=request.data)
+        if a.is_valid():
+            a.save()
+        return Response(a.data)
+    def get(self,request):
+        qs=vaccine_names.objects.all()
+        a=VaccineNameSerializer(qs,many=True)
+        return Response(a.data)
+    
+
+
+class VaccineProgramsListCreateView(generics.ListCreateAPIView):
+    queryset = VaccinePrograms.objects.all()
+    serializer_class = VaccineProgramSerializer
+
+class VaccineProgramsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = VaccinePrograms.objects.all()
+    serializer_class = VaccineProgramSerializer
+
+
+>>>>>>> 0424f19ca817f51a82f9327d38251e5cb727ba9c
 
 
 # class SendMailToParentView(APIView):

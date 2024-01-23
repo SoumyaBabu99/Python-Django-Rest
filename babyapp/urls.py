@@ -40,7 +40,19 @@ urlpatterns=[
     # path('chat/', ChatbotAPI.as_view(), name='chat'),
     path('chatbot/', ChatbotAPI.as_view(), name='chatbot_api'),
 
+<<<<<<< HEAD
+=======
+#add vaccine names
+
+    path('vaccinenames/',VaccineListView.as_view(),name='vaccines'),
 
 
+#set vaccine programs
 
+ path('vaccine_programs/', VaccineProgramsListCreateView.as_view(), name='vaccine-programs-list-create'),
+    path('vaccine_programs_update/<int:pk>/', VaccineProgramsDetailView.as_view(), name='vaccine-programs-detail'),
 ]
+>>>>>>> 0424f19ca817f51a82f9327d38251e5cb727ba9c
+
+
+

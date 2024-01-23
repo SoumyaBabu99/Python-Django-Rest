@@ -134,8 +134,25 @@ class Vax(models.Model):
         blank=True
     )
 
+<<<<<<< HEAD
 
 
+=======
+class vaccine_names(models.Model):
+    vaccine=models.CharField(max_length=10)
+>>>>>>> 0424f19ca817f51a82f9327d38251e5cb727ba9c
 
+    def __str__(self):
+        return self.vaccine
+
+# class VaccinationPrograms(models.Model):
+#     selected_vaccines = models.ManyToManyField(vaccine_names, related_name='vaccination_programs')
+
+#     def __str__(self):
+#         return f"Vaccination Program {self.id}"
+
+
+class VaccinePrograms(models.Model):
+    vaccines = models.ManyToManyField(vaccine_names)
 
     

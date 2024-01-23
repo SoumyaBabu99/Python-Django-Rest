@@ -9,7 +9,11 @@ from langchain.chains.question_answering import load_qa_chain
 import os
 from langchain.llms import OpenAI
 
+<<<<<<< HEAD
 os.environ["OPENAI_API_KEY"] = "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"
+=======
+os.environ["OPENAI_API_KEY"] = "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"
+>>>>>>> 0424f19ca817f51a82f9327d38251e5cb727ba9c
 
 # Read text from PDF
 pdfreader = PdfReader(r"C:\Users\User\babycalender\babyvaccinepro\Dr.baby.pdf")
